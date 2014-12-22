@@ -17,7 +17,9 @@ package kr.nectarine.sunshine;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -53,7 +55,18 @@ public class MainActivity extends Activity {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
             return true;
+        } else if (id == R.id.action_map) {
+
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse("geo:0,0?q=" + PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default))));
+
+            if (i.resolveActivity(getPackageManager()) != null) {
+                startActivity(i);
+            } else {
+                // no match
+            }
         }
+
         return super.onOptionsItemSelected(item);
     }
 

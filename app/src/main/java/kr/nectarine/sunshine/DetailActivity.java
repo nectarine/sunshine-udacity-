@@ -1,20 +1,22 @@
 package kr.nectarine.sunshine;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 
 public class DetailActivity extends Activity {
+
+    ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class DetailActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -59,7 +61,30 @@ public class DetailActivity extends Activity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+       private String mForecastString;
+        private String mHashTag = " #Sunshine";
+
+        private Intent createShareForecaseIntent() {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, mForecastString + mHashTag);
+            return shareIntent;
+        }
+
         public PlaceholderFragment() {
+            setHasOptionsMenu(true);
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.detail_fragment, menu);
+            MenuItem menuItem = menu.findItem(R.id.action_share);
+            ShareActionProvider shareActionProvider = (ShareActionProvider)menuItem.getActionProvider();
+
+            if (shareActionProvider != null) {
+                shareActionProvider.setShareIntent(createShareForecaseIntent());
+            }
         }
 
         @Override
@@ -67,7 +92,8 @@ public class DetailActivity extends Activity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             TextView tvContent = (TextView) rootView.findViewById(R.id.tv_content);
-            tvContent.setText(getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT));
+            mForecastString = getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT);
+            tvContent.setText(mForecastString);
             return rootView;
         }
     }

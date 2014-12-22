@@ -25,6 +25,8 @@
     <string name="pref_unit_key" translatable="false">temperature_units</string>
     <string name="pref_unit_value_metric">Metric</string>
     <string name="pref_unit_value_imperial">Imperial</string>
+    <string name="action_map">Map</string>
+    <string name="action_share">Share</string>
     <string-array name="pref_unit_value_title">
         <item>@string/pref_unit_value_metric</item>
         <item>@string/pref_unit_value_imperial</item>
