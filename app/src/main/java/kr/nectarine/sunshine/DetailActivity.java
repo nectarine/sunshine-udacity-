@@ -3,6 +3,7 @@ package kr.nectarine.sunshine;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.TextView;
 
 
 public class DetailActivity extends Activity {
@@ -42,6 +44,10 @@ public class DetailActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivity(i);
+
             return true;
         }
 
@@ -60,6 +66,8 @@ public class DetailActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            TextView tvContent = (TextView) rootView.findViewById(R.id.tv_content);
+            tvContent.setText(getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT));
             return rootView;
         }
     }
